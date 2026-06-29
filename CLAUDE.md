@@ -123,7 +123,7 @@ Book_library_management/
 │   ├── S-010-add-book-page/           # GREEN ✅
 │   ├── S-011-edit-book-page/          # GREEN ✅
 │   ├── S-012-search-filter-ui/        # GREEN ✅
-│   └── S-013-readme-deploy/           # NEXT (final gate)
+│   └── S-013-readme-deploy/           # GREEN ✅ (with deferred live-smoke + live-CI)
 │
 ├── backend/
 │   ├── .venv/                         # Python venv (gitignored)
@@ -189,9 +189,16 @@ Book_library_management/
 
 ## 5. State as of last session (2026-06-29)
 
-- **Backend: complete and tested.** 37 pytest tests passing, ruff clean.
-- **Frontend: 5 of 5 build packets done.** 35 Vitest tests passing, ESLint clean, build 80.74 KB JS gzip (S-012 added +1.46 KB for SearchBar + FilterDropdown).
-- **Books in `books_dev`:** 2 rows (`Atomic Habits` Read, `Deep Work` Unread) — DB unchanged by S-012 (frontend-only packet). Truncate if you need a known baseline: `psql -U books -d books_dev -c "TRUNCATE books RESTART IDENTITY;"`
+- **All 13 build packets GREEN.** Product gate (D4 §5) met.
+- **Backend:** 37 pytest tests passing, ruff clean.
+- **Frontend:** 35 Vitest tests passing, ESLint clean, build 80.74 KB JS gzip.
+- **Git:** initialized on `main` as of S-013; initial commit `3dcb799` contains the entire working tree (154 tracked files). `.gitignore` verified to exclude `.env`, `.venv`, `node_modules`, `__pycache__`, `dist`, `coverage`, `.pytest_cache`, `.ruff_cache`.
+- **CI:** `.github/workflows/ci.yml` authored per D4 §6 (backend + frontend + security jobs, `postgres:17` service). Not yet exercised on a real GitHub remote — will run on first push.
+- **Outstanding deferrals (see `packets/S-013-readme-deploy/Evidence.md` §Deferrals):**
+  - AC5 — clean-clone smoke on a second machine (timed + screenshot).
+  - AC3 — live CI green on the first `git push` to a remote.
+  - OQ-001 — production deploy target still **Open (deferred)**; README documents Render + Vercel as illustrative.
+- **Books in `books_dev`:** 2 rows (`Atomic Habits` Read, `Deep Work` Unread). Truncate if you need a known baseline: `psql -U books -d books_dev -c "TRUNCATE books RESTART IDENTITY;"`
 - **No commits.** Everything is working-tree only; no git initialised yet by design. If you want to start committing, do so per packet.
 
 ### Packet status (mirror of `Project_Progress_Tracker.xlsx`)
@@ -210,7 +217,7 @@ Book_library_management/
 | S-010 AddBook + shared BookForm | frontend | ✅ GREEN |
 | S-011 EditBook page | frontend | ✅ GREEN |
 | S-012 Search + Filter UI | frontend | ✅ GREEN |
-| **S-013 README + deploy + final gate** | **infra** | **NEXT — awaiting approval** |
+| S-013 README + deploy + final gate | infra | ✅ GREEN (with deferred live-smoke + live-CI) |
 
 ---
 
@@ -297,15 +304,18 @@ Frontend uses `VITE_API_BASE_URL=http://localhost:8000` (default if unset).
 
 ## 8. Resuming tomorrow — what to do
 
-1. Open `Project_Progress_Tracker.xlsx` if you want the dashboard view.
-2. Run the test suites to confirm the working tree is still green:
+All 13 build packets are GREEN. There is no next packet on the v1 backlog. Pick from:
+
+1. **Close the S-013 deferrals** (in priority order):
+   - Push to a GitHub remote → confirm CI green → flip AC3 from ⏳ to ✅ in `packets/S-013-readme-deploy/Evidence.md`.
+   - Run the README quickstart on a second machine, time it, screenshot the running app → append a §AC5 Live Smoke block to the same Evidence file.
+   - Pick a deploy target → update `docs/product/OQ-OPEN-QUESTIONS.md` OQ-001 from Open (deferred) to Resolved → run the deploy.
+2. **Pick from the Level-1 enhancement list** in `docs/product/D8-BACKLOG.md` (pagination, sort, cover images, ISBN lookup, etc.). Each enhancement should be packetized following the same 5-file cycle.
+3. **Verify the working tree is still green** before any new work:
    ```
    backend/.venv/Scripts/python.exe -m pytest backend/tests
    cd frontend && npm test -- --run
    ```
-3. Read `packets/S-013-readme-deploy/Packet_BRD.md` + `Packet_DESIGN.md` + `BUILD_prompt.md`.
-4. **Ask the user for explicit approval** of S-013 before authoring anything. (User has been approving packet-by-packet.)
-5. S-013 is infra/docs (README + deploy + final gate) — likely no JSX, so the frontend-design / ui-ux-pro-max skill gate does not apply. Confirm by reading the BRD.
 
 ---
 

@@ -4,7 +4,7 @@ Live document. Any **Blocker** halts the downstream packet that depends on it.
 
 | ID | Question | Raised by | Status | Resolution / Decision | Affects |
 |----|----------|-----------|--------|------------------------|---------|
-| OQ-001 | Production deploy target — Render (backend) + Vercel (frontend) vs. single Railway service vs. Fly.io? | Builder | **Open** | _TBD before S-013_ | D13, S-013 |
+| OQ-001 | Production deploy target — Render (backend) + Vercel (frontend) vs. single Railway service vs. Fly.io? | Builder | **Open (deferred)** | Decision deferred past S-013 close at user direction (2026-06-29). README §Deploy documents the Render + Vercel path as illustrative; resolve before any actual deploy. | D13, S-013 |
 | OQ-002 | Database choice across environments. | Builder | **Resolved** | **PostgreSQL in dev, test, and prod.** No SQLite anywhere. Dev uses local Postgres via docker-compose; tests use a Postgres test database with transaction-per-test rollback. | D5, D6, D11, D13, D14, D16 |
 | OQ-003 | Is `genre` free-text or a closed enum? Free-text is simpler; enum prevents typos. | Builder | **Resolved** | Free-text for v1; pre-populate dropdown from existing distinct genres in DB. | D6, S-007, S-012 |
 | OQ-004 | Should `created_at` be returned in UTC ISO 8601 only, or also a humanized "X days ago" string? | Builder | **Resolved** | UTC ISO 8601 from the API; humanize in the frontend using `Intl.RelativeTimeFormat`. | D7 |
