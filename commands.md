@@ -1,8 +1,43 @@
 # commands.md — quick reference
 
-Every terminal command for running, testing, and operating this project. Copy-pasteable on Windows (Git Bash / PowerShell). Replace `.venv/Scripts/` with `.venv/bin/` on macOS/Linux.
+Every terminal command for running, testing, and operating this project. **Always run commands from the project root** (`C:\Users\Pratik Mali\Desktop\Claude Ai\Book_library_management`), never from inside `backend/.venv` or any subdirectory unless a step explicitly tells you to `cd` somewhere.
+
+> **Shell matters on Windows.** This file shows examples in Git Bash style (forward slashes, bare relative paths). **PowerShell users:** see §0 below before running anything — PowerShell does not execute relative-path executables without the `&` call operator. Easiest fix: activate the venv once per terminal and just type `python` / `alembic` / `ruff`.
+>
+> macOS/Linux: replace `.venv/Scripts/` with `.venv/bin/` throughout.
 
 > **Authentication note:** This app has **no login screen, no users, no sessions**. Auth is explicitly out-of-scope for v1 (see `CLAUDE.md` §11). The only credentials that exist are local Postgres credentials — they are listed in §Credentials below.
+
+---
+
+## 0. PowerShell vs Git Bash — pick one pattern
+
+### PowerShell — activate the venv (recommended)
+```powershell
+cd "C:\Users\Pratik Mali\Desktop\Claude Ai\Book_library_management"
+backend\.venv\Scripts\Activate.ps1
+# Prompt now shows (.venv) — `python`, `alembic`, `ruff`, `pytest` all resolve to the venv automatically.
+python -m uvicorn backend.main:app --reload --port 8000
+deactivate   # when done
+```
+**One-time fix** if `Activate.ps1` errors with execution policy:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### PowerShell — without activating (use `&`)
+```powershell
+cd "C:\Users\Pratik Mali\Desktop\Claude Ai\Book_library_management"
+& "backend\.venv\Scripts\python.exe" -m uvicorn backend.main:app --reload --port 8000
+```
+
+### Git Bash / WSL / macOS / Linux
+Bare relative paths work as written in this file:
+```bash
+backend/.venv/Scripts/python.exe -m uvicorn backend.main:app --reload --port 8000
+```
+
+The rest of this document uses the Git Bash style. To translate any line for PowerShell, either activate the venv first (and drop the `backend/.venv/Scripts/` prefix) or wrap the path in `& "..."`.
 
 ---
 
@@ -52,14 +87,20 @@ Open two terminals from the project root.
 
 ### Terminal 1 — backend (uvicorn on :8000)
 ```bash
+# Git Bash
 backend/.venv/Scripts/python.exe -m uvicorn backend.main:app --reload --port 8000
+```
+```powershell
+# PowerShell (after Activate.ps1)
+python -m uvicorn backend.main:app --reload --port 8000
 ```
 - Swagger UI: <http://localhost:8000/docs>
 - Health check: <http://localhost:8000/healthz>
 
 ### Terminal 2 — frontend (Vite dev on :5173)
 ```bash
-cd frontend && npm run dev
+cd frontend
+npm run dev
 ```
 App: <http://localhost:5173>
 
