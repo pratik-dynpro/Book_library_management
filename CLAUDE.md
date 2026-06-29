@@ -123,7 +123,7 @@ Book_library_management/
 │   ├── S-010-add-book-page/           # GREEN ✅
 │   ├── S-011-edit-book-page/          # GREEN ✅
 │   ├── S-012-search-filter-ui/        # GREEN ✅
-│   └── S-013-readme-deploy/           # GREEN ✅ (with deferred live-smoke + live-CI)
+│   └── S-013-readme-deploy/           # GREEN ✅ (live CI verified; AC5 second-machine smoke deferred)
 │
 ├── backend/
 │   ├── .venv/                         # Python venv (gitignored)
@@ -192,11 +192,10 @@ Book_library_management/
 - **All 13 build packets GREEN.** Product gate (D4 §5) met.
 - **Backend:** 37 pytest tests passing, ruff clean.
 - **Frontend:** 35 Vitest tests passing, ESLint clean, build 80.74 KB JS gzip.
-- **Git:** initialized on `main` as of S-013; initial commit `3dcb799` contains the entire working tree (154 tracked files). `.gitignore` verified to exclude `.env`, `.venv`, `node_modules`, `__pycache__`, `dist`, `coverage`, `.pytest_cache`, `.ruff_cache`.
-- **CI:** `.github/workflows/ci.yml` authored per D4 §6 (backend + frontend + security jobs, `postgres:17` service). Not yet exercised on a real GitHub remote — will run on first push.
+- **Git + remote:** initialized on `main` as of S-013. Remote: <https://github.com/pratik-dynpro/Book_library_management> (public). Three commits on `main`: `3dcb799` initial, `3159016` S-013 evidence close, `ee9b11f` CI trigger fix (squash-merged from PR #1). `.gitignore` excludes `.env`, `.venv`, `node_modules`, `__pycache__`, `dist`, `coverage`, `.pytest_cache`, `.ruff_cache`.
+- **CI:** live and green. Two confirmed runs on 2026-06-29 — PR #1 (`28359504205`, 41s) and post-merge push-to-main (`28359606351`, 34s); both cover all three jobs (backend, frontend, security). The initial workflow trigger ignored pushes to main; PR #1 fixed that to `on: push: branches: [main]`.
 - **Outstanding deferrals (see `packets/S-013-readme-deploy/Evidence.md` §Deferrals):**
   - AC5 — clean-clone smoke on a second machine (timed + screenshot).
-  - AC3 — live CI green on the first `git push` to a remote.
   - OQ-001 — production deploy target still **Open (deferred)**; README documents Render + Vercel as illustrative.
 - **Books in `books_dev`:** 2 rows (`Atomic Habits` Read, `Deep Work` Unread). Truncate if you need a known baseline: `psql -U books -d books_dev -c "TRUNCATE books RESTART IDENTITY;"`
 - **No commits.** Everything is working-tree only; no git initialised yet by design. If you want to start committing, do so per packet.
@@ -306,9 +305,8 @@ Frontend uses `VITE_API_BASE_URL=http://localhost:8000` (default if unset).
 
 All 13 build packets are GREEN. There is no next packet on the v1 backlog. Pick from:
 
-1. **Close the S-013 deferrals** (in priority order):
-   - Push to a GitHub remote → confirm CI green → flip AC3 from ⏳ to ✅ in `packets/S-013-readme-deploy/Evidence.md`.
-   - Run the README quickstart on a second machine, time it, screenshot the running app → append a §AC5 Live Smoke block to the same Evidence file.
+1. **Close the remaining S-013 deferrals**:
+   - Run the README quickstart on a second machine, time it, screenshot the running app → append a §AC5 Live Smoke block to `packets/S-013-readme-deploy/Evidence.md`.
    - Pick a deploy target → update `docs/product/OQ-OPEN-QUESTIONS.md` OQ-001 from Open (deferred) to Resolved → run the deploy.
 2. **Pick from the Level-1 enhancement list** in `docs/product/D8-BACKLOG.md` (pagination, sort, cover images, ISBN lookup, etc.). Each enhancement should be packetized following the same 5-file cycle.
 3. **Verify the working tree is still green** before any new work:
