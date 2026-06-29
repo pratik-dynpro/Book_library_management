@@ -83,6 +83,21 @@ cd ..
 
 ## 2. Daily run
 
+### Easiest: the launcher scripts (PowerShell)
+
+Two PowerShell scripts at the project root handle the CWD + venv-activation traps automatically. Run from any directory:
+
+```powershell
+.\run-backend.ps1     # uvicorn on :8000, with --reload
+.\run-frontend.ps1    # Vite dev on :5173
+```
+
+The launchers resolve the project root from the script's own location, not from `$PWD`, so they cannot be tripped up by `cd`'ing into a subfolder. They print where they're running from and fail loudly with instructions if the venv or `node_modules` is missing.
+
+Stop either with `Ctrl+C`.
+
+### Manual (if you'd rather drive each step yourself)
+
 Open two terminals from the project root.
 
 ### Terminal 1 — backend (uvicorn on :8000)
@@ -302,6 +317,14 @@ gh pr checks <pr-num>                       # status of CI on a PR
 ---
 
 ## 8. Troubleshooting
+
+### `ModuleNotFoundError: No module named 'backend'` when uvicorn boots
+Caused by running uvicorn from inside the `backend/` directory (or any other subfolder). uvicorn's first log line tells you its CWD:
+```
+INFO:     Will watch for changes in these directories: ['...\Book_library_management']     # correct
+INFO:     Will watch for changes in these directories: ['...\Book_library_management\backend']  # WRONG
+```
+If you see `\backend` (or anything else) at the end of that path, your terminal was not at the project root. Either `cd` to the project root and rerun, or — easier — use `.\run-backend.ps1`, which pins its own CWD.
 
 ### Backend won't start: `OperationalError` or "could not connect"
 Check Postgres is running, then test the connection manually:
