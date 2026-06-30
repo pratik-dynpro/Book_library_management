@@ -157,7 +157,7 @@ export default function Books() {
         Filter bar — designed in S-012 via frontend-design + ui-ux-pro-max.
         Pattern: a single bordered catalogue-card divided by hairlines into 4 cells
         (FIND / AUTHOR / GENRE / STATUS). Each cell carries its own eyebrow label
-        that flips text-mute → text-binding with a leading • when its value is
+        that flips text-mute → text-accent with a leading • when its value is
         non-default — two-channel indicator (color + glyph), so the AC8 rule on
         color-only meaning is respected.
       */}
@@ -169,7 +169,7 @@ export default function Books() {
           <label
             htmlFor="filter-search"
             className={`block text-caption font-medium uppercase tracking-[0.06em] ${
-              searchActive ? 'text-binding' : 'text-mute'
+              searchActive ? 'text-accent' : 'text-mute'
             }`}
           >
             {searchActive ? '• Find' : 'Find'}

@@ -102,7 +102,7 @@ export function ConfirmModal({
             className={`btn inline-flex items-center gap-2 ${
               destructive
                 ? 'bg-danger text-page hover:bg-danger/90'
-                : 'bg-binding text-page hover:bg-binding-hover'
+                : 'bg-accent text-page hover:bg-accent-hover'
             } disabled:opacity-60`}
           >
             {loading && (

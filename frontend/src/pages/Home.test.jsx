@@ -13,9 +13,10 @@ function renderHome() {
   );
 }
 
+// The stats block is the section that contains the "Library at a glance" heading.
 const statsRegion = () => {
-  // The "By the numbers" heading's parent section contains the four StatCards.
-  const region = screen.getByText(/by the numbers/i).parentElement;
+  const heading = screen.getByRole('heading', { name: /library at a glance/i });
+  const region = heading.closest('section');
   if (!region) throw new Error('stats region not found');
   return within(region);
 };
@@ -27,23 +28,25 @@ describe('Home', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: /every book you own/i }),
     ).toBeInTheDocument();
-    // Two CTAs across the page have this label (hero + bottom). Use getAllBy.
     const ctas = screen.getAllByRole('link', { name: /catalogue a new volume/i });
     expect(ctas.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('shows zero stats when no books exist', async () => {
+  it('shows zero stats and the empty-chart hint when no books exist', async () => {
     server.use(okBooks([]));
     renderHome();
     await waitFor(() => {
       const s = statsRegion();
-      const zeros = s.getAllByText('0');
-      expect(zeros.length).toBeGreaterThanOrEqual(4);
+      const zeros = s.getAllByText(/^(0|0%)$/);
+      expect(zeros.length).toBeGreaterThanOrEqual(3);
     });
+    expect(
+      screen.getByText(/add a book and mark it read to start seeing your reading patterns/i),
+    ).toBeInTheDocument();
     expect(screen.queryByText(/NaN/i)).toBeNull();
   });
 
-  it('reflects the mocked /books response in the stats cards', async () => {
+  it('reflects the mocked /books response in the stats block + bar chart', async () => {
     server.use(
       okBooks([
         {
@@ -76,15 +79,18 @@ describe('Home', () => {
     renderHome();
     await waitFor(() => {
       const s = statsRegion();
-      // total=3, read=2, unread=1, genres=2
-      expect(s.getByText('3')).toBeInTheDocument(); // total — unique value
-      expect(s.getByText('1')).toBeInTheDocument(); // unread — unique value
-      expect(s.getAllByText('2')).toHaveLength(2); // read AND genres both = 2
+      // Each metric column has a number + a label. Scope by label.
+      const volumesCol = s.getByText(/^volumes$/i).parentElement;
+      const readCol = s.getByText(/^read$/i).parentElement;
+      const genresCol = s.getByText(/^genres$/i).parentElement;
+      expect(within(volumesCol).getByText('3')).toBeInTheDocument();
+      expect(within(readCol).getByText('67%')).toBeInTheDocument();
+      expect(within(genresCol).getByText('2')).toBeInTheDocument();
     });
 
-    // Shelf renders one spine per book.
-    const shelf = await screen.findByRole('list', { name: /books on the shelf/i });
-    expect(within(shelf).getAllByRole('listitem')).toHaveLength(3);
+    // Bar chart: Self Help (2 reads) appears as a labeled row.
+    const chart = screen.getByRole('list', { name: /reads by genre/i });
+    expect(within(chart).getByText(/self help/i)).toBeInTheDocument();
   });
 
   it('has no horizontal scroll at 360px', async () => {

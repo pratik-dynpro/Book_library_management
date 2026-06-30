@@ -1,5 +1,7 @@
 # D9 · Design Spec (per-screen, field-level)
 
+> **Status (2026-06-30):** §3 Color, §3 Typography, §6 Home, and §6 BookCard are **superseded** by `docs/superpowers/specs/2026-06-29-frontend-redesign-design.md` (implemented in packet S-014). The current design direction is **Modern SaaS / Tech** (slate-ink + indigo accent, Tinos + Poppins). All other sections — responsive breakpoints, motion, spacing scale, accessibility rules, and the §3 skill-gate process below — remain authoritative.
+
 ## Skills that produced — and gate — this spec
 
 This document captures **intent**, not the final visual system. The final palette, font pairing, and per-component treatment are produced by running the following skills at the start of each frontend packet (S-008 — S-012), in this exact order:

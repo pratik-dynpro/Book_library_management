@@ -123,7 +123,8 @@ Book_library_management/
 │   ├── S-010-add-book-page/           # GREEN ✅
 │   ├── S-011-edit-book-page/          # GREEN ✅
 │   ├── S-012-search-filter-ui/        # GREEN ✅
-│   └── S-013-readme-deploy/           # GREEN ✅ (live CI verified; AC5 second-machine smoke deferred)
+│   ├── S-013-readme-deploy/           # GREEN ✅ (live CI verified; AC5 second-machine smoke deferred)
+│   └── S-014-frontend-redesign/       # GREEN ✅ (Modern SaaS direction; AC13 live browser smoke deferred)
 │
 ├── backend/
 │   ├── .venv/                         # Python venv (gitignored)
@@ -187,11 +188,11 @@ Book_library_management/
 
 ---
 
-## 5. State as of last session (2026-06-29)
+## 5. State as of last session (2026-06-30)
 
-- **All 13 build packets GREEN.** Product gate (D4 §5) met.
+- **All 14 build packets GREEN.** Product gate (D4 §5) met. S-014 redesigned the frontend to the **Modern SaaS / Tech** direction (slate ink + indigo accent on soft white, Tinos + Poppins) — the spine-shelf signature element is gone, replaced by a stats block + reads-by-genre bar chart on Home, and a 2-px status-driven left border on `BookCard`.
 - **Backend:** 37 pytest tests passing, ruff clean.
-- **Frontend:** 35 Vitest tests passing, ESLint clean, build 80.74 KB JS gzip.
+- **Frontend:** 35 Vitest tests passing, ESLint clean, build 80.53 KB JS gzip.
 - **Git + remote:** initialized on `main` as of S-013. Remote: <https://github.com/pratik-dynpro/Book_library_management> (public). Three commits on `main`: `3dcb799` initial, `3159016` S-013 evidence close, `ee9b11f` CI trigger fix (squash-merged from PR #1). `.gitignore` excludes `.env`, `.venv`, `node_modules`, `__pycache__`, `dist`, `coverage`, `.pytest_cache`, `.ruff_cache`.
 - **CI:** live and green. Two confirmed runs on 2026-06-29 — PR #1 (`28359504205`, 41s) and post-merge push-to-main (`28359606351`, 34s); both cover all three jobs (backend, frontend, security). The initial workflow trigger ignored pushes to main; PR #1 fixed that to `on: push: branches: [main]`.
 - **Outstanding deferrals (see `packets/S-013-readme-deploy/Evidence.md` §Deferrals):**
@@ -217,30 +218,35 @@ Book_library_management/
 | S-011 EditBook page | frontend | ✅ GREEN |
 | S-012 Search + Filter UI | frontend | ✅ GREEN |
 | S-013 README + deploy + final gate | infra | ✅ GREEN (with deferred live-smoke + live-CI) |
+| S-014 Frontend redesign (Modern SaaS) | frontend | ✅ GREEN (AC13 live browser smoke deferred) |
 
 ---
 
 ## 6. Design system snapshot
 
-**Direction:** "Editorial Modernism, Personal Library Edition." Bookish without the AI-default warmth (cream + serif + terracotta cluster was explicitly avoided).
+**Direction:** "Modern SaaS / Tech." Slate ink + indigo accent on soft-white surfaces; minimal decoration, single accent color. (The previous "Editorial Modernism" with cloth-binding burgundy was retired in S-014.)
 
 **Palette** (all from `frontend/src/design/tokens.js`):
 
 | Token | Hex | Used for |
 |------|-----|----------|
-| `page` | `#F2EFE7` | Warm stone background (not cream) |
-| `card` | `#FAF8F2` | Surface above background |
-| `ink` | `#1A1A1C` | Body text |
-| `mute` | `#A8A29E` | Captions, borders |
-| `hairline` | `#D8D3C7` | Dividers |
-| `binding` | `#7A1F2A` | Primary CTA, accent (cloth-binding burgundy) |
-| `gilt` | `#8B6914` | Read-status mark (antique brass) |
-| `moss` | `#3A5A3B` | Success toasts |
-| `danger` | `#9A2A2A` | Destructive actions, error toasts |
+| `page` | `#F8FAFC` | Slate-50 app background |
+| `card` | `#FFFFFF` | Surface above background |
+| `ink` | `#0F172A` | Slate-900 primary text |
+| `mute` | `#64748B` | Slate-500 captions, borders |
+| `hairline` | `#E2E8F0` | Slate-200 dividers |
+| `accent` | `#4F46E5` | Indigo-600 primary CTA, Read status, focus rings |
+| `accent.hover` | `#4338CA` | Indigo-700 hover state |
+| `accent.soft` | `#EEF2FF` | Indigo-50 tinted bg, bar-chart track |
+| `danger` | `#DC2626` | Destructive actions, error toasts |
+| `success` | `#15803D` | Success toasts |
+| `warning` | `#B45309` | Reserved (no current consumer) |
 
-**Type:** `Newsreader` (display + variable OPSZ) + `DM Sans` (UI/body). Both loaded from Google Fonts in `index.html`.
+**Type:** `Tinos` (display, weight 700 — real shipped Google Fonts weight; no synthetic bold) + `Poppins` (UI/body, 300–700). Loaded from Google Fonts in `index.html`.
 
-**Signature element:** the CSS book-spine shelf on Home — colored vertical bars with rotated titles, unread books pulled forward 4 px, hover lifts. `BookCard` carries a matching 6-px stripe so the same book is recognizable across views.
+**Signature elements:**
+- Home **stats block** with three big tabular-num metrics (Volumes / Read % / Genres) and a horizontal **reads-by-genre bar chart** (`bg-accent-soft` track + `bg-accent` fill, `Math.max(8, …)` floor).
+- `BookCard` carries a **2-px functional left border** — `border-l-accent` if Read, `border-l-hairline` if Queued — paired with `sr-only` status text (two-channel a11y).
 
 **Rule:** NO raw hex strings in JSX. All colors come through Tailwind classes resolved from `tokens.js`.
 

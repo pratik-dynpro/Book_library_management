@@ -1,38 +1,36 @@
 /**
- * Design tokens — produced by frontend-design + ui-ux-pro-max in packet S-008.
+ * Design tokens — produced via frontend-design + ui-ux-pro-max in packet S-014.
  *
- * Direction: "Editorial Modernism, Personal Library Edition"
- *   Base style:    Swiss Modernism 2.0 (grid + mathematical spacing)
- *   Mood:          Personal library / cloth bindings — bookish without cliché
- *   Anti-templates: avoided cream + serif + terracotta cluster
+ * Direction: "Modern SaaS / Tech"
+ *   Surfaces:   slate-50 page, white cards
+ *   Accent:     indigo-600 single accent (CTAs, focus, Read-status)
+ *   Type:       Tinos (display, weight 700) + Poppins (body)
  *
  * Single source of truth for color + type. All components import from here.
  */
 
 export const palette = {
   /* Surfaces */
-  page: '#F2EFE7', // warm stone (not the AI-default cream)
-  card: '#FAF8F2', // a half-shade brighter than page for cards
-  ink: '#1A1A1C', // near-black, neutral tint
-  mute: '#A8A29E', // taupe for borders + captions
-  hairline: '#D8D3C7', // subtle dividing line
+  page: '#F8FAFC', // slate-50 — app background
+  card: '#FFFFFF', // surface above background
+  ink: '#0F172A', // slate-900 — primary text
+  mute: '#64748B', // slate-500 — secondary text, captions
+  hairline: '#E2E8F0', // slate-200 — borders, dividers
 
-  /* Cloth-binding accents (the bookish signature, kept restrained) */
-  binding: '#7A1F2A', // deep burgundy (primary accent)
-  bindingHover: '#5A1620',
-  bindingSoft: '#F2D6D8', // a wash of binding for chips / hover backgrounds
-  gilt: '#8B6914', // antique brass (read-status mark, used sparingly)
-  moss: '#3A5A3B', // bottle green (second binding color)
+  /* Accent */
+  accent: '#4F46E5', // indigo-600 — primary CTA, Read status, focus rings
+  accentHover: '#4338CA', // indigo-700 — hover state
+  accentSoft: '#EEF2FF', // indigo-50 — tinted bg, chart bar track
 
   /* Functional */
-  danger: '#9A2A2A',
-  success: '#3A5A3B',
+  danger: '#DC2626', // red-600
+  success: '#15803D', // emerald-700
+  warning: '#B45309', // amber-700
 };
 
 export const type = {
-  display: '"Newsreader", "Iowan Old Style", "Georgia", serif',
-  body: '"DM Sans", "Inter", system-ui, -apple-system, sans-serif',
-  // For numerals in stats we keep DM Sans tabular figures — no third family
+  display: '"Tinos", "Times New Roman", serif',
+  body: '"Poppins", system-ui, -apple-system, "Segoe UI", sans-serif',
 };
 
 export const scale = {
@@ -46,7 +44,6 @@ export const scale = {
   small: '0.875rem', // 14
   caption: '0.75rem', // 12
 
-  // spacing scale follows Tailwind defaults (4/8 grid)
   // radii
   radiusSm: '4px',
   radiusMd: '8px',
@@ -59,24 +56,3 @@ export const motion = {
   slow: '360ms',
   ease: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
 };
-
-/**
- * Helper: each book gets a deterministic binding color from a small palette
- * so the spine shelf is varied without being random across renders.
- */
-export const spineColors = [
-  '#7A1F2A', // binding burgundy
-  '#3A5A3B', // moss
-  '#2A3E60', // navy cloth
-  '#5A3B22', // saddle
-  '#4A3B66', // aubergine
-  '#8B6914', // brass / mustard
-  '#7A4A1F', // tan leather
-];
-
-export function spineColorFor(seed) {
-  if (!seed) return spineColors[0];
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return spineColors[h % spineColors.length];
-}

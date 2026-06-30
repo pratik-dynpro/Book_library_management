@@ -70,7 +70,7 @@ function ToastViewport({ toasts, onDismiss }) {
 function Toast({ variant, message, onDismiss }) {
   const tone =
     variant === 'success'
-      ? 'border-moss/40 bg-moss text-page'
+      ? 'border-success/40 bg-success text-page'
       : variant === 'error'
         ? 'border-danger/40 bg-danger text-page'
         : 'border-ink/30 bg-ink text-page';

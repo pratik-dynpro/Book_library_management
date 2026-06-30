@@ -11,7 +11,7 @@ export function FilterDropdown({ label, anyLabel, options, value, onChange }) {
       <label
         htmlFor={id}
         className={`block text-caption font-medium uppercase tracking-[0.06em] ${
-          isActive ? 'text-binding' : 'text-mute'
+          isActive ? 'text-accent' : 'text-mute'
         }`}
       >
         {isActive ? `• ${label}` : label}

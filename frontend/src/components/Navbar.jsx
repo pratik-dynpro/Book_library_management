@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 const linkBase =
   'relative inline-flex h-9 items-center px-1 text-small font-medium text-ink/70 transition-colors hover:text-ink';
-const active = 'text-ink after:absolute after:inset-x-0 after:-bottom-1 after:h-[2px] after:bg-binding';
+const active = 'text-ink after:absolute after:inset-x-0 after:-bottom-1 after:h-[2px] after:bg-accent';
 
 export function Navbar() {
   return (
@@ -12,7 +12,7 @@ export function Navbar() {
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
-            className="h-5 w-5 text-binding"
+            className="h-5 w-5 text-accent"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.6"

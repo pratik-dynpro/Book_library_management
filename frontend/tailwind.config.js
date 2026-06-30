@@ -11,15 +11,14 @@ export default {
         ink: palette.ink,
         mute: palette.mute,
         hairline: palette.hairline,
-        binding: {
-          DEFAULT: palette.binding,
-          hover: palette.bindingHover,
-          soft: palette.bindingSoft,
+        accent: {
+          DEFAULT: palette.accent,
+          hover: palette.accentHover,
+          soft: palette.accentSoft,
         },
-        gilt: palette.gilt,
-        moss: palette.moss,
         danger: palette.danger,
         success: palette.success,
+        warning: palette.warning,
       },
       fontFamily: {
         display: type.display.split(',').map((s) => s.trim().replace(/^"|"$/g, '')),

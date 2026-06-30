@@ -65,7 +65,7 @@ export function SearchBar({ value, onChange, inputId = 'filter-search' }) {
           type="button"
           aria-label="Clear search"
           onClick={clear}
-          className="absolute right-0 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm text-mute transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-binding focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+          className="absolute right-0 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm text-mute transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-card"
         >
           <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
             <path

@@ -15,7 +15,7 @@ const LIMITS = {
 
 function Required() {
   return (
-    <span aria-hidden="true" className="ml-0.5 text-binding">
+    <span aria-hidden="true" className="ml-0.5 text-accent">
       *
     </span>
   );
@@ -104,7 +104,7 @@ export function BookForm({
     classNames(
       'mt-1.5 w-full rounded-md border bg-page px-3 py-2.5 text-body text-ink',
       'placeholder:text-mute',
-      'transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-binding focus-visible:ring-offset-2 focus-visible:ring-offset-page',
+      'transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-page',
       errorFor(field) ? 'border-danger' : 'border-hairline',
     );
 
@@ -184,7 +184,7 @@ export function BookForm({
                 value="Read"
                 checked={values.status === 'Read'}
                 onChange={(e) => setField('status', e.target.value)}
-                className="accent-binding"
+                className="accent-accent"
               />
               Read
             </label>
@@ -195,7 +195,7 @@ export function BookForm({
                 value="Unread"
                 checked={values.status === 'Unread'}
                 onChange={(e) => setField('status', e.target.value)}
-                className="accent-binding"
+                className="accent-accent"
               />
               Unread
             </label>
